@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainManager : MonoBehaviour
 {
@@ -12,16 +13,22 @@ public class MainManager : MonoBehaviour
 
     public Text ScoreText;
     public GameObject GameOverText;
+
+    [SerializeField] TextMeshProUGUI best;
     
     private bool m_Started = false;
     private int m_Points;
     
     private bool m_GameOver = false;
 
+
     
+
     // Start is called before the first frame update
     void Start()
     {
+        best.text = "Best score " + GameManager.Instance.Nome + m_Points;
+
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
