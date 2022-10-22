@@ -9,14 +9,17 @@ using UnityEditor;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] GameObject inputField;
+    GameManager gameManager;
+    
+    [SerializeField] TextMeshProUGUI recordText;
 
-    string inizio = "";
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameManager = GameObject.Find("Manager").GetComponent<GameManager>();
+        recordText.text = "Record " + gameManager.darNomeRecord() + ":" + gameManager.darPunteggioRecord();
     }
 
     // Update is called once per frame
@@ -25,10 +28,14 @@ public class MainMenu : MonoBehaviour
         
     }
 
+
     public void Clickstart()
     {
-        if(inputField.GetComponent<TMP_InputField>().text != inizio )
+        string inizio = GameObject.Find("Giocatore").GetComponent<TextMeshProUGUI>().text;
+
+        if(inizio != "")
         {
+            gameManager.Giocatore(inizio);
             SceneManager.LoadScene(1);
         }
         else
@@ -45,8 +52,8 @@ public class MainMenu : MonoBehaviour
 #else
         Application.Quit(); // original code to quit Unity player
 #endif
-        //Salvataggio ultimo hight score
         
+
 
     }
 }

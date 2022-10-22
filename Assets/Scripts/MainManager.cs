@@ -14,21 +14,25 @@ public class MainManager : MonoBehaviour
     public Text ScoreText;
     public GameObject GameOverText;
 
-    [SerializeField] TextMeshProUGUI best;
+    
     
     private bool m_Started = false;
     private int m_Points;
     
     private bool m_GameOver = false;
 
+    private GameManager gameManager;
+    [SerializeField] TextMeshProUGUI recordText;
 
-    
+
+
+
 
     // Start is called before the first frame update
     void Start()
     {
-        best.text = "Best score " + GameManager.Instance.Nome + m_Points;
 
+       
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -43,6 +47,17 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        try
+        {
+            gameManager = GameObject.Find("Manager").GetComponent<GameManager>();
+            recordText.text = "Best Score: " + gameManager.darNomeRecord() + ":" + gameManager.darPunteggioRecord();
+        }
+        catch
+        {
+            recordText.text = "Best Score : : 0 ";
+        }
+       
     }
 
     private void Update()
@@ -62,10 +77,27 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver)
         {
+            try
+            {
+                if (m_Points > gameManager.darPunteggioRecord())
+                {
+                    gameManager.SaveNameAndHeighScore(m_Points);
+                    recordText.text = "Best Score: " + gameManager.darNomeRecord() + ":" + gameManager.darPunteggioRecord();
+                }
+            }
+            catch
+            {
+
+            }
+           
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                
             }
+
+           
         }
     }
 
